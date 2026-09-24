@@ -1,0 +1,51 @@
+# Archivos de usuario de Visual Studio
+.vs/
+*.user
+*.suo
+
+# Archivos de configuración locales
+*.dbmdl
+*.jfm
+*.pdb
+*.cache
+*.log
+
+# Archivos de compilación
+bin/
+obj/
+Debug/
+Release/
+
+# Configuración de Rider/Resharper
+.idea/
+*.DotSettings
+
+# Archivos de publicación
+publish/
+*.pubxml
+*.publishproj
+
+# Configuración de sistema
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Archivos de entorno
+.env
+
+# Paquetes NuGet
+*.nupkg
+packages/
+*.snupkg
+
+# Archivos generados por VS Code
+.vscode/
+
+# Archivos de cobertura y pruebas
+TestResults/
+*.coverage
+*.coveragexml
+
+# Archivos de backup
+*.bak
+*.tmp
