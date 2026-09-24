@@ -108,8 +108,23 @@ public class ProductService : IProductService
         return true;
     }
 
-    public Task<bool> DeleteAsync(int id)
+    //borrado lógico, EF Core realizará un UPDATE, no un DELETE.
+    public async Task<bool> DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        //nos aseguramos que el producto exista y esté activo antes de borrarlo.
+        var product = await _context.Products
+            .FirstOrDefaultAsync(p => p.Id == id && p.IsActive);
+
+        if (product is null)
+        {
+            return false;
+        }
+
+        product.IsActive = false;
+        product.UpdatedAt = DateTime.UtcNow;
+
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 }
