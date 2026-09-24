@@ -55,9 +55,34 @@ public class ProductService : IProductService
             .FirstOrDefaultAsync();
     }
 
-    public Task<ProductDto> CreateAsync(CreateProductDto dto)
+    //crear un producto y guardarlo en SQL Server.
+    public async Task<ProductDto> CreateAsync(CreateProductDto dto)
     {
-        throw new NotImplementedException();
+        var product = new Product
+        {
+            Name = dto.Name,
+            Description = dto.Description,
+            Price = dto.Price,
+            Stock = dto.Stock,
+            IsActive = true,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        _context.Products.Add(product);
+
+        await _context.SaveChangesAsync();
+
+        return new ProductDto
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Description = product.Description,
+            Price = product.Price,
+            Stock = product.Stock,
+            IsActive = product.IsActive,
+            CreatedAt = product.CreatedAt,
+            UpdatedAt = product.UpdatedAt
+        };
     }
 
     public Task<bool> UpdateAsync(int id, UpdateProductDto dto)
