@@ -85,9 +85,27 @@ public class ProductService : IProductService
         };
     }
 
-    public Task<bool> UpdateAsync(int id, UpdateProductDto dto)
+    public async Task<bool> UpdateAsync(int id, UpdateProductDto dto)
     {
-        throw new NotImplementedException();
+        //se serciora de que el producto exista y esté activo antes de actualizarlo.
+        var product = await _context.Products
+            .FirstOrDefaultAsync(p => p.Id == id && p.IsActive);
+
+        //si no existe se regresa false
+        if (product is null)
+        {
+            return false;
+        }
+
+        product.Name = dto.Name;
+        product.Description = dto.Description;
+        product.Price = dto.Price;
+        product.Stock = dto.Stock;
+        product.UpdatedAt = DateTime.UtcNow;
+
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 
     public Task<bool> DeleteAsync(int id)
