@@ -16,6 +16,7 @@ public class ProductService : IProductService
         _context = context;
     }
 
+    //obtener todos los productos.
     public async Task<List<ProductDto>> GetAllAsync()
     {
         //convierte cada Product de la base de datos en un ProductDto.
@@ -35,9 +36,23 @@ public class ProductService : IProductService
             .ToListAsync();
     }
 
-    public Task<ProductDto?> GetByIdAsync(int id)
+    //obtener un producto específico por su ID.
+    public async Task<ProductDto?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _context.Products
+            .Where(p => p.Id == id && p.IsActive)
+            .Select(p => new ProductDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                Price = p.Price,
+                Stock = p.Stock,
+                IsActive = p.IsActive,
+                CreatedAt = p.CreatedAt,
+                UpdatedAt = p.UpdatedAt
+            })
+            .FirstOrDefaultAsync();
     }
 
     public Task<ProductDto> CreateAsync(CreateProductDto dto)
