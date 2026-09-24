@@ -1,4 +1,5 @@
 using InventoryApi.Data;
+using InventoryApi.Services;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -14,8 +15,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
+//inyección de dependencias para ProductService, que implementa IProductService.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
