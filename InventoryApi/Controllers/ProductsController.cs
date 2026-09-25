@@ -41,4 +41,16 @@ public class ProductsController : ControllerBase
 
         return Ok(product);
     }
+
+    //crear un producto
+    [HttpPost]
+    public async Task<ActionResult<ProductDto>> Create(CreateProductDto dto)
+    {
+        var product = await _productService.CreateAsync(dto);
+
+        return CreatedAtAction(
+            nameof(GetById),
+            new { id = product.Id },
+            product);
+    }
 }
