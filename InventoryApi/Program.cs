@@ -1,43 +1,43 @@
 using InventoryApi.Data;
+using InventoryApi.Exceptions;
 using InventoryApi.Services;
 using Microsoft.EntityFrameworkCore;
-using InventoryApi.Exceptions;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Configuración de servicios
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-
 builder.Services.AddProblemDetails();
 
-//Cuando alguien necesite AppDbContext, se crea utilizando SQL Server y la conexión llamada DefaultConnection.
+// Inyección de dependencias (DI)
+
+// Contexto de base de datos
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
-//inyección de dependencias para ProductService, que implementa IProductService.
+// Servicios de la aplicación
+builder.Services.AddScoped<IProductService, ProductService>();
+
+// Configuración de Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configuración de Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// Configuración del pipeline HTTP
 app.UseMiddleware<ExceptionHandlingMiddleware>();
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
+// Mapeo de endpoints
 app.MapControllers();
 
 app.Run();

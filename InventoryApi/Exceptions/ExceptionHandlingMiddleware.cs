@@ -6,10 +6,14 @@ namespace InventoryApi.Exceptions;
 public class ExceptionHandlingMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly ILogger<ExceptionHandlingMiddleware> _logger;
 
-    public ExceptionHandlingMiddleware(RequestDelegate next)
+    public ExceptionHandlingMiddleware(
+        RequestDelegate next,
+        ILogger<ExceptionHandlingMiddleware> logger)
     {
         _next = next;
+        _logger = logger;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -18,10 +22,14 @@ public class ExceptionHandlingMiddleware
         {
             await _next(context);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            //ProblemDetails
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            _logger.LogError(
+                ex,
+                "Ocurrió un error inesperado al procesar la petición.");
+
+            context.Response.StatusCode =
+                StatusCodes.Status500InternalServerError;
 
             await context.Response.WriteAsJsonAsync(new
             {
