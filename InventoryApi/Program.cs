@@ -1,6 +1,7 @@
 using InventoryApi.Data;
 using InventoryApi.Services;
 using Microsoft.EntityFrameworkCore;
+using InventoryApi.Exceptions;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
