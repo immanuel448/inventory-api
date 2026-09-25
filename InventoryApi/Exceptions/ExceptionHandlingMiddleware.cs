@@ -20,17 +20,16 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception)
         {
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            context.Response.ContentType = "application/json";
+            //ProblemDetails
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
-            var response = new
+            await context.Response.WriteAsJsonAsync(new
             {
+                type = "https://httpstatuses.com/500",
+                title = "Error interno del servidor",
                 status = 500,
-                message = "Ocurrió un error interno en el servidor."
-            };
-
-            await context.Response.WriteAsync(
-                JsonSerializer.Serialize(response));
+                detail = "Ocurrió un error interno en el servidor."
+            });
         }
     }
 }
