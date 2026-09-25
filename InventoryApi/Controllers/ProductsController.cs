@@ -20,6 +20,9 @@ public class ProductsController : ControllerBase
     //endpoints
 
     //obtener todos los productos
+    /// <summary>
+    /// Obtiene todos los productos activos.
+    /// </summary>
     [HttpGet]
     public async Task<ActionResult<List<ProductDto>>> GetAll()
     {
@@ -29,6 +32,9 @@ public class ProductsController : ControllerBase
     }
 
     //obtener un producto por id
+    /// <summary>
+    /// Obtiene un producto activo por su identificador.
+    /// </summary>
     [HttpGet("{id}")]
     public async Task<ActionResult<ProductDto>> GetById(int id)
     {
@@ -43,6 +49,9 @@ public class ProductsController : ControllerBase
     }
 
     //crear un producto
+    /// <summary>
+    /// Crea un nuevo producto.
+    /// </summary>
     [HttpPost]
     public async Task<ActionResult<ProductDto>> Create(CreateProductDto dto)
     {
@@ -55,6 +64,9 @@ public class ProductsController : ControllerBase
     }
 
     //actualizar un producto
+    /// <summary>
+    /// Actualiza un producto existente.
+    /// </summary>
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, UpdateProductDto dto)
     {
@@ -69,6 +81,9 @@ public class ProductsController : ControllerBase
     }
 
     //eliminar un producto
+    /// <summary>
+    /// Desactiva un producto mediante eliminación lógica.
+    /// </summary>
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {

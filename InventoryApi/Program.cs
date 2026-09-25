@@ -2,6 +2,7 @@ using InventoryApi.Data;
 using InventoryApi.Exceptions;
 using InventoryApi.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,13 @@ builder.Services.AddScoped<IProductService, ProductService>();
 
 // Configuración de Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+    options.IncludeXmlComments(xmlPath);
+});
 
 var app = builder.Build();
 
