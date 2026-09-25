@@ -18,11 +18,27 @@ public class ProductsController : ControllerBase
     }
 
     //endpoints
+
+    //obtener todos los productos
     [HttpGet]
     public async Task<ActionResult<List<ProductDto>>> GetAll()
     {
         var products = await _productService.GetAllAsync();
 
         return Ok(products);
+    }
+
+    //obtener un producto por id
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ProductDto>> GetById(int id)
+    {
+        var product = await _productService.GetByIdAsync(id);
+
+        if (product is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(product);
     }
 }
