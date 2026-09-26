@@ -8,6 +8,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configuración de servicios
 builder.Services.AddControllers();
+//CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("BlazorPolicy", policy =>
+    {
+        policy.WithOrigins("https://localhost:7138")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 builder.Services.AddProblemDetails();
 
 // Inyección de dependencias (DI)
@@ -42,6 +52,7 @@ if (app.Environment.IsDevelopment())
 // Configuración del pipeline HTTP
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
+app.UseCors("BlazorPolicy");//SE ACTIVA CORS
 app.UseAuthorization();
 
 // Mapeo de endpoints
